@@ -60,7 +60,7 @@ app.use('/', express.static(path.join(__dirname, '../dist')));
 // Servir arquivos públicos (logo, favicon) no subdiretório /Admin
 app.use('/', express.static(path.join(__dirname, '../public')));
 
-// Rotas da API com prefixo /Admin/api
+// Rotas da API com prefixo /api
 app.use('/api/auth', authRoutes);
 app.use('/api/revendas', revendasRoutes);
 app.use('/api/admins', adminsRoutes);

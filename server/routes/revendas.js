@@ -118,7 +118,7 @@ router.post('/', authenticateToken, requireLevel(['super_admin', 'admin']), asyn
     // Gerar ID único
     const generateId = () => Math.random().toString(36).substring(2, 8).toUpperCase();
     let id = generateId();
-    
+
     // Verificar se ID já existe
     let [existingId] = await pool.execute('SELECT codigo FROM revendas WHERE id = ?', [id]);
     while (existingId.length > 0) {
@@ -134,7 +134,7 @@ router.post('/', authenticateToken, requireLevel(['super_admin', 'admin']), asyn
 
     // Usar servidor fornecido ou obter servidor padrão das configurações
     let servidorSelecionado = codigo_wowza_servidor;
-    
+
     if (!servidorSelecionado) {
       const [config] = await pool.execute(
         'SELECT codigo_wowza_servidor_atual FROM configuracoes WHERE codigo = 1'
@@ -150,21 +150,30 @@ router.post('/', authenticateToken, requireLevel(['super_admin', 'admin']), asyn
 
     const [result] = await pool.execute(
       `INSERT INTO revendas (
-        codigo_revenda, id, usuario, nome, email, telefone, senha, streamings, espectadores,
-        bitrate, espaco, subrevendas, chave_api, status, data_cadastro, dominio_padrao,
-        idioma_painel, tipo, ultimo_acesso_data, ultimo_acesso_ip, admin_criador,
-        data_expiracao, status_detalhado, observacoes_admin, limite_uploads_diario,
-        espectadores_ilimitado, bitrate_maximo, url_suporte, codigo_wowza_servidor, plano_id
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    codigo_revenda, id, usuario, nome, email, telefone, senha, senha_stream,
+    streamings, espectadores, bitrate, espaco, subrevendas, chave_api, status,
+    data_cadastro, dominio_padrao, idioma_painel, tipo, ultimo_acesso_data,
+    ultimo_acesso_ip, admin_criador, data_expiracao, status_detalhado,
+    observacoes_admin, limite_uploads_diario, espectadores_ilimitado,
+    bitrate_maximo, url_suporte, codigo_wowza_servidor, plano_id
+  ) VALUES (
+    ?, ?, ?, ?, ?, ?, ?, ?,
+    ?, ?, ?, ?, ?, ?, ?, NOW(),
+    ?, ?, ?, NOW(),
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+  )`,
       [
-        0, id, usuario, nome, email, telefone, senhaHash, streamings, espectadores,
-        bitrate, espaco, subrevendas, chaveApi, 1, dominio_padrao,
-        idioma_painel, 1, '0.0.0.0', req.admin.codigo,
+        0, id, usuario, nome, email, telefone,
+        senhaHash, senha_stream,
+        streamings, espectadores, bitrate, espaco, subrevendas,
+        chaveApi, 1, dominio_padrao, idioma_painel, 1,
+        '0.0.0.0', req.admin.codigo,
         data_expiracao || null, status_detalhado, observacoes_admin,
-        limite_uploads_diario, espectadores_ilimitado ? 1 : 0, bitrate_maximo,
-        url_suporte, servidorSelecionado, plano_id || null
+        limite_uploads_diario, espectadores_ilimitado ? 1 : 0,
+        bitrate_maximo, url_suporte, servidorSelecionado, plano_id || null
       ]
     );
+
 
     // Criar configuração Wowza no servidor
     if (serverData[0]) {
@@ -176,7 +185,7 @@ router.post('/', authenticateToken, requireLevel(['super_admin', 'admin']), asyn
           espectadores: espectadores_ilimitado ? 999999 : espectadores,
           senha: senha
         });
-        
+
         console.log(`✅ Configuração Wowza criada para revenda ${usuario}`);
       } catch (wowzaError) {
         console.error('Erro ao criar configuração Wowza:', wowzaError);
@@ -253,7 +262,7 @@ router.post('/', authenticateToken, requireLevel(['super_admin', 'admin']), asyn
 router.put('/:id', authenticateToken, requireLevel(['super_admin', 'admin']), async (req, res) => {
   try {
     const revendaId = req.params.id;
-    
+
     // Buscar dados anteriores
     const [revendaAnterior] = await pool.execute(
       'SELECT * FROM revendas WHERE codigo = ?',
@@ -284,7 +293,7 @@ router.put('/:id', authenticateToken, requireLevel(['super_admin', 'admin']), as
       usuario, nome, email, telefone, streamings, espectadores, bitrate, espaco,
       subrevendas, status_detalhado, data_expiracao || null, observacoes_admin,
       limite_uploads_diario, espectadores_ilimitado ? 1 : 0, bitrate_maximo,
-        dominio_padrao, idioma_painel, url_suporte, plano_id || null
+      dominio_padrao, idioma_painel, url_suporte, plano_id || null
     ];
 
     // Adicionar servidor se fornecido
@@ -469,12 +478,12 @@ router.post('/:id/sync-wowza', authenticateToken, requireLevel(['super_admin', '
     });
 
     // Log da ação
-    await logAdminAction(req.admin.codigo, 'sync_wowza', 'revendas', revendaId, null, { 
+    await logAdminAction(req.admin.codigo, 'sync_wowza', 'revendas', revendaId, null, {
       action: wowzaResult.action,
-      message: wowzaResult.message 
+      message: wowzaResult.message
     }, req);
 
-    res.json({ 
+    res.json({
       message: wowzaResult.message,
       action: wowzaResult.action,
       success: true
@@ -482,9 +491,9 @@ router.post('/:id/sync-wowza', authenticateToken, requireLevel(['super_admin', '
 
   } catch (error) {
     console.error('Erro ao sincronizar configuração Wowza:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Erro interno do servidor',
-      error: error.message 
+      error: error.message
     });
   }
 });

@@ -23,7 +23,7 @@ fi
 
 # Copiar arquivos para o diretório de produção (ajuste o caminho conforme necessário)
 echo "📁 Copiando arquivos..."
-# sudo cp -r dist/* /var/www/samhost/Admin/
+# sudo cp -r dist/* /var/www/samhost/
 # sudo cp -r server /var/www/samhost/
 # sudo cp package*.json /var/www/samhost/
 # sudo cp .env /var/www/samhost/
