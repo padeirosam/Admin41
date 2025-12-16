@@ -13,7 +13,7 @@ class WowzaConfigService {
    * Cria os arquivos de configuração do Wowza para uma revenda/streaming
    */
   async createWowzaConfig(config) {
-    const { nome, serverIp, bitrate = 4500, espectadores = 999999, senha } = config;
+    const { nome, serverIp, bitrate = 4500, espectadores = 999999, senha, senha_stream} = config;
     
     try {
       console.log(`📝 Criando configuração Wowza para: ${nome}`);
@@ -67,7 +67,7 @@ class WowzaConfigService {
       
       // Criar publish.password
       try {
-        await this.createPublishPassword(appDir, nome, senha, serverIp, serverData);
+        await this.createPublishPassword(appDir, nome, senha_stream, serverIp, serverData);
         console.log(`✅ publish.password criado com sucesso`);
       } catch (error) {
         console.error(`❌ Erro ao criar publish.password:`, error);

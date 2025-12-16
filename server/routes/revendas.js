@@ -474,7 +474,7 @@ router.post('/:id/sync-wowza', authenticateToken, requireLevel(['super_admin', '
       serverIp: serverData[0].ip,
       bitrate: revendaData.bitrate_maximo || revendaData.bitrate,
       espectadores: revendaData.espectadores_ilimitado ? 999999 : revendaData.espectadores,
-      senha: 'senha_padrao' // Você pode definir uma lógica para recuperar a senha
+      senha: senha_stream // Você pode definir uma lógica para recuperar a senha
     });
 
     // Log da ação
