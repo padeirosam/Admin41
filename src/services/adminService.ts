@@ -19,7 +19,7 @@ class AdminService {
         ...filters
       });
 
-      const response = await fetch(`${this.baseURL}?${params}`, {
+      const response = await fetch(`${this.baseURL}/admins?${params}`, {
         headers: this.getAuthHeaders(),
       });
 
