@@ -26,7 +26,7 @@ function App() {
     <ErrorBoundary>
     <AuthProvider>
       <NotificationProvider>
-        <Router basename="/Admin">
+        <Router basename="/">
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />

@@ -116,7 +116,7 @@ export const RevendaForm: React.FC = () => {
   const loadDefaultServer = async () => {
     try {
       const token = localStorage.getItem('admin_token');
-      const response = await fetch('/Admin/api/config', {
+      const response = await fetch('/api/config', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

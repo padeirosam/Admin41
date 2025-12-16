@@ -55,29 +55,29 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Servir arquivos estáticos do build do React no subdiretório /Admin
-app.use('/Admin', express.static(path.join(__dirname, '../dist')));
+app.use('/', express.static(path.join(__dirname, '../dist')));
 
 // Servir arquivos públicos (logo, favicon) no subdiretório /Admin
-app.use('/Admin', express.static(path.join(__dirname, '../public')));
+app.use('/', express.static(path.join(__dirname, '../public')));
 
 // Rotas da API com prefixo /Admin/api
-app.use('/Admin/api/auth', authRoutes);
-app.use('/Admin/api/revendas', revendasRoutes);
-app.use('/Admin/api/admins', adminsRoutes);
-app.use('/Admin/api/logs', logsRoutes);
-app.use('/Admin/api/dashboard', dashboardRoutes);
-app.use('/Admin/api/profiles', profilesRoutes);
-app.use('/Admin/api/servers', serversRoutes);
-app.use('/Admin/api/config', configRoutes);
-app.use('/Admin/api/plans', plansRoutes);
-app.use('/Admin/api/streamings', streamingsRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/revendas', revendasRoutes);
+app.use('/api/admins', adminsRoutes);
+app.use('/api/logs', logsRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/profiles', profilesRoutes);
+app.use('/api/servers', serversRoutes);
+app.use('/api/config', configRoutes);
+app.use('/api/plans', plansRoutes);
+app.use('/api/streamings', streamingsRoutes);
 
-app.get('/Admin/api/health', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
 // Rota catch-all para o React Router no subdiretório /Admin
-app.get('/Admin/*', (req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 

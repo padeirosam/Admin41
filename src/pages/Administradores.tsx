@@ -59,7 +59,7 @@ export const Administradores: React.FC = () => {
   const loadProfiles = async () => {
     try {
       // Carregar perfis de acesso disponíveis
-      const response = await fetch('/Admin/api/profiles', {
+      const response = await fetch('/api/profiles', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
         },

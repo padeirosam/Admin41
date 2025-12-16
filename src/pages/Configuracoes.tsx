@@ -47,7 +47,7 @@ export const Configuracoes: React.FC = () => {
   const loadConfig = async () => {
     try {
       const token = localStorage.getItem('admin_token');
-      const response = await fetch('/Admin/api/config', {
+      const response = await fetch('/api/config', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -77,7 +77,7 @@ export const Configuracoes: React.FC = () => {
   const loadServers = async () => {
     try {
       const token = localStorage.getItem('admin_token');
-      const response = await fetch('/Admin/api/config/servers', {
+      const response = await fetch('/api/config/servers', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -98,7 +98,7 @@ export const Configuracoes: React.FC = () => {
 
     try {
       const token = localStorage.getItem('admin_token');
-      const response = await fetch('/Admin/api/config', {
+      const response = await fetch('/api/config', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

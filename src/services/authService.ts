@@ -12,7 +12,7 @@ interface ApiError {
 }
 
 class AuthService {
-  private baseURL = import.meta.env.VITE_API_URL || '/Admin/api';
+  private baseURL = import.meta.env.VITE_API_URL || '/api';
 
   private async handleApiResponse(response: Response) {
     if (!response.ok) {
@@ -30,7 +30,7 @@ class AuthService {
       // Se for erro 401 ou 403, limpar token e redirecionar
       if (response.status === 401 || response.status === 403) {
         this.clearAuthData();
-        window.location.href = '/Admin/login';
+        window.location.href = '/login';
       }
       
       throw new Error(error.message || 'Erro de comunicação com o servidor');

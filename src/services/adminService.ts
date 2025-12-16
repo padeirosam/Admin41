@@ -1,7 +1,7 @@
 import { Admin, AdminFormData } from '../types/admin';
 
 class AdminService {
-  private baseURL = import.meta.env.VITE_API_URL || '/Admin/api';
+  private baseURL = import.meta.env.VITE_API_URL || '/api';
 
   private getAuthHeaders() {
     const token = localStorage.getItem('admin_token');
@@ -19,7 +19,7 @@ class AdminService {
         ...filters
       });
 
-      const response = await fetch(`${this.baseURL}/admins?${params}`, {
+      const response = await fetch(`${this.baseURL}?${params}`, {
         headers: this.getAuthHeaders(),
       });
 

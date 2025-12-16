@@ -46,4 +46,4 @@ npm run dev
 npm run server:dev
 ```
 
-O painel de desenvolvimento estará disponível em `http://localhost:5173/Admin/`
+O painel de desenvolvimento estará disponível em `http://localhost:5173/`

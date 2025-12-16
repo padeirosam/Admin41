@@ -254,7 +254,7 @@ tail -f /usr/local/WowzaStreamingEngine-4.8.0/logs/wowzastreamingengine_access.l
   const handleCleanup = async (serverId: number) => {
     try {
       setLoading(true);
-      const response = await fetch(`/Admin/api/servers/${serverId}/cleanup`, {
+      const response = await fetch(`/api/servers/${serverId}/cleanup`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,

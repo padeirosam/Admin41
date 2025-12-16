@@ -1,6 +1,6 @@
 // Serviço base para todas as chamadas de API com tratamento de erros centralizado
 class ApiService {
-  private baseURL = import.meta.env.VITE_API_URL || '/Admin/api';
+  private baseURL = import.meta.env.VITE_API_URL || '/api';
 
   private getAuthHeaders() {
     const token = localStorage.getItem('admin_token');
@@ -25,7 +25,7 @@ class ApiService {
         
         // Só redirecionar se não estivermos já na página de login
         if (!window.location.pathname.includes('/login')) {
-          window.location.href = '/Admin/login';
+          window.location.href = '/login';
         }
       }
 
