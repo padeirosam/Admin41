@@ -5,6 +5,7 @@ import { pool, settings } from '../config/database.js';
 import { authenticateToken, requireLevel } from '../middleware/auth.js';
 import { logAdminAction } from '../middleware/logger.js';
 import { wowzaConfigService } from '../services/wowzaConfigService.js';
+import { createFtpUser } from '../config/ftpService.js';
 
 const router = express.Router();
 
@@ -244,6 +245,14 @@ router.post('/', authenticateToken, requireLevel(['super_admin', 'admin']), asyn
       }, req);
 
       console.log(`✅ Streaming ${usuario} criada automaticamente para revenda ${usuario}`);
+
+      await createFtpUser({
+        serverId: servidorSelecionado,
+        username: usuario,
+        password: senha
+      });
+
+      console.log(`📁 FTP criado no servidor Wowza para ${usuario}`);
     } catch (streamingError) {
       console.error('Erro ao criar streaming automaticamente:', streamingError);
       // Log do erro mas não falha a criação da revenda
@@ -311,9 +320,10 @@ router.put('/:id', authenticateToken, requireLevel(['super_admin', 'admin']), as
 
     // Se senha_stream foi fornecida, incluir na atualização
     if (senha_stream && senha_stream.trim() !== '') {
-      // Aqui teríamos que atualizar a senha_transmissao na tabela streamings associada
-      // Por enquanto, apenas logamos que seria necessário atualizar
+      updateQuery += ', senha_stream = ?';
+      params.push(senha_stream);
     }
+
 
     updateQuery += ' WHERE codigo = ?';
     params.push(revendaId);
@@ -474,7 +484,7 @@ router.post('/:id/sync-wowza', authenticateToken, requireLevel(['super_admin', '
       serverIp: serverData[0].ip,
       bitrate: revendaData.bitrate_maximo || revendaData.bitrate,
       espectadores: revendaData.espectadores_ilimitado ? 999999 : revendaData.espectadores,
-      senha: senha_stream // Você pode definir uma lógica para recuperar a senha
+      senha: revendaData.senha_stream
     });
 
     // Log da ação
